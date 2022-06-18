@@ -5,6 +5,7 @@ import CheckOut from "./CheckOut/CheckOut";
 import Header from "./Header/Header";
 import Home from "./Home/Home";
 import Login from "./Login/Login";
+import ManageServices from "./ManageServices/ManageServices";
 import MyProfile from "./MyProfile/MyProfile";
 import RequireAuth from "./RequireAuth/RequireAuth";
 import ServiceDetails from "./ServiceDetails/ServiceDetails";
@@ -31,6 +32,14 @@ function App() {
           element={
             <RequireAuth>
               <AddServices />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/manageservices"
+          element={
+            <RequireAuth>
+              <ManageServices />
             </RequireAuth>
           }
         />
