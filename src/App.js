@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router-dom";
+import AddServices from "./AddServices/AddServices";
 import CheckOut from "./CheckOut/CheckOut";
 
 import Header from "./Header/Header";
@@ -22,6 +23,14 @@ function App() {
           element={
             <RequireAuth>
               <CheckOut />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/addservices"
+          element={
+            <RequireAuth>
+              <AddServices />
             </RequireAuth>
           }
         />
