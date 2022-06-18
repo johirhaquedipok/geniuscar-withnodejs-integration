@@ -2,7 +2,18 @@ import { Col, Container, Row } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 const AddServices = () => {
   const { register, handleSubmit } = useForm();
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    console.log(data);
+    fetch(`http://localhost:5000/service`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => res.json())
+      .then((result) => console.log(result));
+  };
   return (
     <Container>
       <Row>
@@ -15,7 +26,7 @@ const AddServices = () => {
             <input
               className="mb-2"
               placeholder="name"
-              {...register("firstName", { required: true, maxLength: 20 })}
+              {...register("name", { required: true, maxLength: 20 })}
             />
             <input
               className="mb-2"
