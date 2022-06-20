@@ -7,6 +7,7 @@ import Home from "./Home/Home";
 import Login from "./Login/Login";
 import ManageServices from "./ManageServices/ManageServices";
 import MyProfile from "./MyProfile/MyProfile";
+import Order from "./Order/Order";
 import RequireAuth from "./RequireAuth/RequireAuth";
 import ServiceDetails from "./ServiceDetails/ServiceDetails";
 
@@ -20,10 +21,18 @@ function App() {
         <Route path="/services/:serviceId" element={<ServiceDetails />} />
         <Route path="/login" element={<Login />} />
         <Route
-          path="/checkout"
+          path="/checkout/:serviceId"
           element={
             <RequireAuth>
               <CheckOut />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/orders"
+          element={
+            <RequireAuth>
+              <Order />
             </RequireAuth>
           }
         />
