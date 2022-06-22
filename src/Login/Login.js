@@ -1,14 +1,15 @@
+import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import { toast, ToastContainer } from "react-toastify";
-
 import {
   useSendPasswordResetEmail,
   useSignInWithEmailAndPassword,
 } from "react-firebase-hooks/auth";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import auth from "../firebase.init";
+import useToken from "../Hooks/useToken";
 import SocialSignIn from "../SocialSignIn/SocialSignIn";
 const Login = () => {
   const [signInWithEmailAndPassword, user, loading, error] =
@@ -17,6 +18,7 @@ const Login = () => {
     useSendPasswordResetEmail(auth);
   // const [email, setEmail] = useState("");
   // const [password, setPassword] = useState("");
+  const [token] = useToken(user);
   const [check, setCheck] = useState(false);
   const emailRef = useRef("");
   const passwordRef = useRef("");
@@ -24,15 +26,20 @@ const Login = () => {
   let navigate = useNavigate();
   let location = useLocation();
   let from = location.state?.from?.pathname || "/";
-  function handleSubmit(event) {
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
     signInWithEmailAndPassword(email, password);
-  }
+    const { data } = await axios.post("http://localhost:5000/login", { email });
+    localStorage.setItem("accessToken", data.accessToken);
+    navigate(from, { replace: true });
+  };
 
   const handleResetPassword = async () => {
     const email = emailRef.current.value;
+
     await sendPasswordResetEmail(email);
     toast("Email Sent");
   };
@@ -41,10 +48,10 @@ const Login = () => {
     errorElement = <p className="text-danger">Error: {error?.message}</p>;
   }
   useEffect(() => {
-    if (user) {
+    if (token) {
       navigate(from, { replace: true });
     }
-  }, [navigate, user, from]);
+  }, [navigate, token, from]);
   return (
     <>
       {errorElement}

@@ -5,6 +5,7 @@ import {
 } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 import auth from "../firebase.init";
+import useToken from "../Hooks/useToken";
 const SocialSignIn = () => {
   const navigate = useNavigate();
   const [signInWithGoogle, googleUser, googleLoading, googleError] =
@@ -12,6 +13,7 @@ const SocialSignIn = () => {
   // github sign in
   const [signInWithGithub, githubUser, githubLoading, githubError] =
     useSignInWithGithub(auth);
+  const [token] = useToken(googleUser || githubUser);
   let errorElement;
   if (googleError || githubError) {
     errorElement = (
@@ -22,7 +24,7 @@ const SocialSignIn = () => {
       </div>
     );
   }
-  if (googleUser) {
+  if (token) {
     navigate("/home");
   }
   return (
